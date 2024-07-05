@@ -31,11 +31,11 @@ end
 
 local function on_setup()
   vim.api.nvim_create_user_command("HARender", function(args)
-    local buf      = vim.api.nvim_get_current_buf()
+    local b = vim.api.nvim_get_current_buf()
     if args.range == 0 then
-      return M.display_result(M.template_from_buffer { buf, line1 = 0, line2 = -1 })
+      return M.display_result(M.template_from_buffer { buf = b, line1 = 0, line2 = -1 })
     else
-      return M.display_result(M.template_from_buffer { buf, line1 = args.line1, line2 = args.line2 })
+      return M.display_result(M.template_from_buffer { buf = b, line1 = args.line1, line2 = args.line2 })
     end
   end, {
     range = 2,
