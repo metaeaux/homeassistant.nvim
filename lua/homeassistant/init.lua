@@ -13,8 +13,8 @@ M.template = function(lines)
   return res.body
 end
 
-M.template_from_buffer = function(bufnr)
-  local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+M.template_from_buffer = function(opts)
+  local lines = vim.api.nvim_buf_get_lines(opts.buf, opts.line1, opts.line2, false)
   return M.template(lines)
 end
 
