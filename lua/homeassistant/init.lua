@@ -5,7 +5,7 @@ _G._homeassistant = M
 M.template = function(lines)
   local res = curl.post(M.url .. "/api/template", {
     headers = M.headers(),
-    body = vim.json.encode({ template = table.concat(lines, "\n")}),
+    body = vim.json.encode({ template = table.concat(lines, "\n") }),
   })
   if res.status ~= 200 then
     error(res.body)
@@ -29,20 +29,24 @@ M.display_result = function(lines)
   )
 end
 
-local function on_setup ()
-  vim.api.nvim_create_user_command("HARender", function(_)
-    return M.display_result(M.template_from_buffer(vim.api.nvim_get_current_buf()))
+local function on_setup()
+  vim.api.nvim_create_user_command("HARender", function(args)
+    local buf      = vim.api.nvim_get_current_buf()
+    if args.range == 0 then
+      return M.display_result(M.template_from_buffer { buf, line1 = 0, line2 = -1 })
+    else
+      return M.display_result(M.template_from_buffer { buf, line1 = args.line1, line2 = args.line2 })
+    end
   end, {
-    -- complete = "buffer",
-    nargs = 0,
-    bang = true, -- force redefinition
+    range = 2,
+    bang = true,
   })
 end
 
 M.setup = function(opts)
   vim.validate {
-    url = {opts.url, 's'},
-    token = {opts.token, 's'},
+    url = { opts.url, 's' },
+    token = { opts.token, 's' },
   }
   M.url = opts.url
   -- Wrap the headers in a function to not expose the token so easily
