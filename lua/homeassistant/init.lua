@@ -19,14 +19,7 @@ M.template_from_buffer = function(opts)
 end
 
 M.display_result = function(lines)
-  vim.lsp.util.open_floating_preview(
-    vim.split(lines, "\n"),
-    "markdown",
-    {
-      max_height = 60,
-      max_width = 60,
-    }
-  )
+  require("notify")(lines)
 end
 
 local function on_setup()
