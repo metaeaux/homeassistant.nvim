@@ -1,5 +1,6 @@
 local M = {}
 local curl = require("plenary.curl")
+local notify = require("notify")
 _G._homeassistant = M
 
 M.template = function(lines)
@@ -19,7 +20,7 @@ M.template_from_buffer = function(opts)
 end
 
 M.display_result = function(lines)
-  require("notify")(lines)
+  notify(lines, { title = 'Home Assistant' })
 end
 
 local function on_setup()
