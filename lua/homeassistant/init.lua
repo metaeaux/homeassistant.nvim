@@ -20,7 +20,7 @@ M.template_from_buffer = function(opts)
 end
 
 M.display_result = function(lines)
-  notify(lines, { title = 'Home Assistant' })
+  notify(lines, "info", { title = 'Home Assistant' })
 end
 
 local function on_setup()
