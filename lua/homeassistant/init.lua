@@ -25,6 +25,12 @@ end
 
 local function on_setup()
   vim.api.nvim_create_user_command("HARender", function(args)
+    local m = vim.fn.mode()                      -- detect current mode
+    if m == 'v' or m == 'V' or m == '\22' then   -- <C-V>
+      vim.cmd([[execute "normal! \<ESC>"]])
+      args.line1 = vim.fn.getpos("'<")[2]
+      args.line2 = vim.fn.getpos("'>")[2]
+    end
     local b = vim.api.nvim_get_current_buf()
     if args.range == 0 then
       return M.display_result(M.template_from_buffer { buf = b, line1 = 0, line2 = -1 })
