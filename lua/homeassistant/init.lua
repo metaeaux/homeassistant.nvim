@@ -26,19 +26,17 @@ end
 local function on_setup()
   vim.api.nvim_create_user_command("HARender", function(args)
     local m = vim.fn.mode()                      -- detect current mode
+    local l1 = 0
+    local l2 = -1
     if m == 'v' or m == 'V' or m == '\22' then   -- <C-V>
       vim.cmd([[execute "normal! \<ESC>"]])
-      args.line1 = vim.fn.getpos("'<")[2]
-      args.line2 = vim.fn.getpos("'>")[2]
+      l1 = vim.fn.getpos("'<")[2]
+      l2 = vim.fn.getpos("'>")[2]
     end
     local b = vim.api.nvim_get_current_buf()
-    if args.range == 0 then
-      return M.display_result(M.template_from_buffer { buf = b, line1 = 0, line2 = -1 })
-    else
-      return M.display_result(M.template_from_buffer { buf = b, line1 = args.line1 - 1, line2 = args.line2 })
-    end
+    return M.display_result(M.template_from_buffer { buf = b, line1 = l1, line2 = l2 })
   end, {
-    range = 2,
+    range = true,
     bang = true,
   })
 end
